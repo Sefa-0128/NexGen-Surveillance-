@@ -1,0 +1,101 @@
+import React from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ShieldCheck, Camera, Eye, Phone } from "lucide-react";
+import { motion } from "framer-motion";
+
+export default function NexGenWebsite() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 text-white">
+      {/* Hero Section */}
+      <section className="text-center py-20 px-6">
+        <motion.h1
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-5xl md:text-6xl font-bold mb-6"
+        >
+          NexGen Surveillance
+        </motion.h1>
+        <p className="text-xl md:text-2xl text-slate-300 mb-8">
+          Securing What Matters Most
+        </p>
+        <Button className="rounded-2xl px-8 py-6 text-lg">
+          Contact Us: 0543345674
+        </Button>
+      </section>
+
+      {/* Overview Section */}
+      <section className="py-16 px-6 max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
+        <div>
+          <h2 className="text-3xl font-semibold mb-4">Company Overview</h2>
+          <p className="text-slate-300 leading-relaxed">
+            NexGen Surveillance is a modern security solutions provider specializing in advanced CCTV installation, remote monitoring systems, and customized security infrastructure for homes, businesses, and institutions. We combine innovation, reliability, and professional expertise to deliver peace of mind.
+          </p>
+        </div>
+        <div className="grid gap-6">
+          <Card className="bg-slate-900 border-none rounded-2xl shadow-xl">
+            <CardContent className="p-6">
+              <Camera className="mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Advanced CCTV Systems</h3>
+              <p className="text-slate-400">High-definition indoor & outdoor surveillance systems.</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-slate-900 border-none rounded-2xl shadow-xl">
+            <CardContent className="p-6">
+              <Eye className="mb-4" />
+              <h3 className="text-xl font-semibold mb-2">24/7 Monitoring</h3>
+              <p className="text-slate-400">Real-time access from anywhere via mobile & desktop.</p>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* Mission, Vision & Values */}
+      <section className="py-16 px-6 bg-slate-900">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
+          <Card className="rounded-2xl shadow-xl">
+            <CardContent className="p-6">
+              <ShieldCheck className="mb-4" />
+              <h3 className="text-2xl font-semibold mb-3">Our Mission</h3>
+              <p className="text-slate-300">To deliver cutting-edge security solutions with professional installation and reliable support.</p>
+            </CardContent>
+          </Card>
+          <Card className="rounded-2xl shadow-xl">
+            <CardContent className="p-6">
+              <h3 className="text-2xl font-semibold mb-3">Our Vision</h3>
+              <p className="text-slate-300">To become a leading and trusted provider of smart surveillance solutions.</p>
+            </CardContent>
+          </Card>
+          <Card className="rounded-2xl shadow-xl">
+            <CardContent className="p-6">
+              <h3 className="text-2xl font-semibold mb-3">Our Values</h3>
+              <ul className="text-slate-300 list-disc list-inside">
+                <li>Integrity</li>
+                <li>Innovation</li>
+                <li>Reliability</li>
+                <li>Customer Commitment</li>
+                <li>Professionalism</li>
+              </ul>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* Commitment Section */}
+      <section className="py-20 px-6 text-center">
+        <h2 className="text-3xl font-semibold mb-6">Our Commitment</h2>
+        <p className="max-w-3xl mx-auto text-slate-300 text-lg leading-relaxed">
+          At NexGen Surveillance, we understand that security is essential. We are committed to delivering dependable systems, expert installation, and ongoing support to ensure maximum protection for your property and assets.
+        </p>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-slate-950 py-10 text-center text-slate-400">
+        <Phone className="mx-auto mb-3" />
+        <p>Contact: 0543345674</p>
+        <p className="mt-2">© {new Date().getFullYear()} NexGen Surveillance. All Rights Reserved.</p>
+      </footer>
+    </div>
+  );
+}
