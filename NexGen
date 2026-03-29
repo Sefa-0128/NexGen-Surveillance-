@@ -1,101 +1,1060 @@
-import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ShieldCheck, Camera, Eye, Phone } from "lucide-react";
-import { motion } from "framer-motion";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NexGen Surveillance — Securing What Matters Most</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
-export default function NexGenWebsite() {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 text-white">
-      {/* Hero Section */}
-      <section className="text-center py-20 px-6">
-        <motion.h1
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-5xl md:text-6xl font-bold mb-6"
-        >
-          NexGen Surveillance
-        </motion.h1>
-        <p className="text-xl md:text-2xl text-slate-300 mb-8">
-          Securing What Matters Most
-        </p>
-        <Button className="rounded-2xl px-8 py-6 text-lg">
-          Contact Us: 0543345674
-        </Button>
-      </section>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-      {/* Overview Section */}
-      <section className="py-16 px-6 max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
-        <div>
-          <h2 className="text-3xl font-semibold mb-4">Company Overview</h2>
-          <p className="text-slate-300 leading-relaxed">
-            NexGen Surveillance is a modern security solutions provider specializing in advanced CCTV installation, remote monitoring systems, and customized security infrastructure for homes, businesses, and institutions. We combine innovation, reliability, and professional expertise to deliver peace of mind.
-          </p>
+    :root {
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --indigo: #6366f1;
+      --dark: #020617;
+      --dark2: #0f172a;
+      --dark3: #1e293b;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --border: rgba(255,255,255,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--dark);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, .logo-text { font-family: 'Syne', sans-serif; }
+
+    /* ── NAVBAR ─────────────────────────────────── */
+    #navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      transition: background .3s, backdrop-filter .3s, border-color .3s;
+      border-bottom: 1px solid transparent;
+    }
+    #navbar.scrolled {
+      background: rgba(2,6,23,0.94);
+      backdrop-filter: blur(18px);
+      border-color: var(--border);
+    }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto;
+      padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 72px;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 12px;
+      text-decoration: none; cursor: pointer;
+    }
+    .logo-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: var(--blue);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; color: #fff;
+    }
+    .logo-text { font-size: 18px; font-weight: 800; color: #fff; }
+    .logo-text span { color: var(--blue); }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 2px;
+      list-style: none;
+    }
+    .nav-links > li { position: relative; }
+    .nav-links > li > a {
+      display: flex; align-items: center; gap: 5px;
+      padding: 8px 16px; border-radius: 10px;
+      color: var(--muted); text-decoration: none;
+      font-size: 14px; font-weight: 500;
+      transition: background .2s, color .2s;
+      cursor: pointer;
+    }
+    .nav-links > li > a:hover,
+    .nav-links > li > a.active { background: rgba(255,255,255,0.08); color: #fff; }
+    .nav-links > li > a i.chevron {
+      font-size: 11px; transition: transform .25s;
+    }
+    .nav-links > li:hover > a i.chevron { transform: rotate(180deg); }
+
+    /* Dropdown */
+    .dropdown {
+      display: none;
+      position: absolute; top: calc(100% + 8px); left: 0;
+      width: 220px;
+      background: rgba(2,6,23,0.97);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 24px 48px rgba(0,0,0,.6);
+    }
+    .nav-links > li:hover .dropdown { display: block; }
+    .dropdown a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 16px;
+      color: var(--muted); text-decoration: none;
+      font-size: 13px; transition: background .2s, color .2s;
+    }
+    .dropdown a i { color: var(--blue); width: 16px; }
+    .dropdown a:hover { background: rgba(255,255,255,0.07); color: #fff; }
+
+    .nav-cta {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .nav-phone {
+      display: flex; align-items: center; gap: 6px;
+      color: var(--muted); font-size: 13px; text-decoration: none;
+      transition: color .2s;
+    }
+    .nav-phone:hover { color: #fff; }
+    .nav-phone i { color: var(--blue); }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 22px; border-radius: 12px;
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 14px; cursor: pointer; border: none;
+      text-decoration: none; transition: all .25s;
+    }
+    .btn-primary { background: var(--blue); color: #fff; }
+    .btn-primary:hover { background: #60a5fa; transform: translateY(-1px); }
+    .btn-outline {
+      background: transparent; color: #fff;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .btn-outline:hover { background: rgba(255,255,255,0.08); }
+
+    /* Hamburger */
+    .hamburger {
+      display: none; background: none; border: none;
+      cursor: pointer; color: #fff; font-size: 22px;
+    }
+    .mobile-menu {
+      display: none;
+      background: rgba(2,6,23,0.98);
+      border-top: 1px solid var(--border);
+      padding: 12px 16px 20px;
+    }
+    .mobile-menu.open { display: block; }
+    .mobile-link {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px; border-radius: 12px;
+      color: var(--muted); text-decoration: none; font-size: 14px;
+      cursor: pointer; transition: background .2s, color .2s;
+    }
+    .mobile-link:hover { background: rgba(255,255,255,0.07); color: #fff; }
+    .mobile-sub { display: none; padding-left: 16px; }
+    .mobile-sub.open { display: block; }
+    .mobile-sub a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 16px; border-radius: 10px;
+      color: #64748b; text-decoration: none; font-size: 13px;
+      transition: color .2s;
+    }
+    .mobile-sub a i { color: var(--blue); }
+    .mobile-sub a:hover { color: #fff; }
+    .mobile-cta {
+      display: flex; gap: 10px; padding: 12px 0 0;
+      border-top: 1px solid var(--border); margin-top: 8px;
+    }
+    .mobile-cta a { flex: 1; text-align: center; justify-content: center; }
+
+    /* ── SLIDER ─────────────────────────────────── */
+    #hero {
+      position: relative; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .slide {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity .6s ease;
+      pointer-events: none;
+    }
+    .slide.active { opacity: 1; pointer-events: auto; }
+
+    .slide-bg {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+    }
+    .slide[data-slide="0"] .slide-bg { background: linear-gradient(135deg, #020617 0%, #0c1a3b 50%, #0f172a 100%); }
+    .slide[data-slide="1"] .slide-bg { background: linear-gradient(135deg, #020617 0%, #041f2e 50%, #0f172a 100%); }
+    .slide[data-slide="2"] .slide-bg { background: linear-gradient(135deg, #020617 0%, #0e0c2e 50%, #0f172a 100%); }
+
+    .slide-grid {
+      position: absolute; inset: 0; opacity: .08;
+      background-image:
+        linear-gradient(var(--accent, #3b82f6) 1px, transparent 1px),
+        linear-gradient(90deg, var(--accent, #3b82f6) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .slide-glow {
+      position: absolute;
+      top: 40%; left: 50%; transform: translate(-50%,-50%);
+      width: 600px; height: 600px; border-radius: 50%;
+      filter: blur(120px); opacity: .18;
+      background: var(--accent, #3b82f6);
+      pointer-events: none;
+    }
+    .slide-icon-bg {
+      position: absolute; right: 5%; bottom: 10%;
+      font-size: 280px; color: var(--accent, #3b82f6);
+      opacity: .05; pointer-events: none;
+    }
+
+    .slide-content {
+      position: relative; z-index: 2;
+      text-align: center; max-width: 860px; padding: 0 24px;
+    }
+    .slide-badge {
+      display: inline-block; margin-bottom: 24px;
+      font-size: 11px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase;
+      padding: 7px 18px; border-radius: 100px;
+      border: 1px solid; transition: opacity .5s .1s;
+    }
+    .slide-content h1 {
+      font-size: clamp(2.4rem, 6vw, 4.5rem);
+      font-weight: 800; line-height: 1.1;
+      color: #fff; margin-bottom: 20px;
+    }
+    .slide-content p {
+      font-size: 1.15rem; color: var(--muted);
+      max-width: 560px; margin: 0 auto 40px; line-height: 1.7;
+    }
+    .slide-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    /* Arrow controls */
+    .slider-arrow {
+      position: absolute; top: 50%; z-index: 10;
+      transform: translateY(-50%);
+      width: 48px; height: 48px; border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff; font-size: 16px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background .2s;
+    }
+    .slider-arrow:hover { background: rgba(255,255,255,0.18); }
+    .slider-arrow.prev { left: 20px; }
+    .slider-arrow.next { right: 20px; }
+
+    /* Dots */
+    .slider-dots {
+      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 10px; z-index: 10;
+    }
+    .dot {
+      height: 10px; border-radius: 5px;
+      background: rgba(255,255,255,0.25);
+      cursor: pointer; transition: width .3s, background .3s;
+      width: 10px; border: none;
+    }
+    .dot.active { width: 32px; }
+
+    /* ── SECTION SHARED ─────────────────────────── */
+    section { padding: 96px 24px; }
+    .section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800; color: #fff; margin-bottom: 16px;
+    }
+    .section-sub {
+      color: var(--muted); max-width: 520px; margin: 0 auto;
+      line-height: 1.7; font-size: 1rem;
+    }
+    .section-head { text-align: center; margin-bottom: 64px; }
+
+    /* ── SERVICES ───────────────────────────────── */
+    #services { background: var(--dark); }
+    .services-grid {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .service-card {
+      padding: 28px; border-radius: 20px;
+      background: rgba(30,41,59,0.4);
+      border: 1px solid var(--border);
+      transition: background .25s, border-color .25s, transform .25s;
+      cursor: pointer;
+    }
+    .service-card:hover {
+      background: rgba(30,41,59,0.85);
+      border-color: rgba(255,255,255,0.15);
+      transform: translateY(-4px);
+    }
+    .service-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; margin-bottom: 20px;
+    }
+    .service-card h3 { font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .service-card p { color: var(--muted); font-size: .9rem; line-height: 1.65; }
+
+    /* ── SOLUTIONS ──────────────────────────────── */
+    #solutions { background: var(--dark2); }
+    .solutions-grid {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 28px;
+    }
+    .solution-card {
+      text-align: center; padding: 48px 32px;
+      border-radius: 24px;
+      background: rgba(2,6,23,.5);
+      border: 1px solid var(--border);
+      transition: background .25s, transform .25s;
+    }
+    .solution-card:hover { background: rgba(2,6,23,.9); transform: translateY(-4px); }
+    .solution-icon {
+      width: 64px; height: 64px; border-radius: 18px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; margin: 0 auto 24px;
+    }
+    .solution-card h3 { font-size: 1.2rem; font-weight: 800; color: #fff; margin-bottom: 12px; }
+    .solution-card p { color: var(--muted); line-height: 1.7; font-size: .95rem; }
+
+    /* ── ABOUT ──────────────────────────────────── */
+    #about { background: var(--dark); }
+    .about-grid {
+      max-width: 1100px; margin: 0 auto 80px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+    }
+    .about-text h2 { font-size: clamp(2rem,4vw,2.8rem); font-weight: 800; color: #fff; margin-bottom: 24px; }
+    .about-text p { color: var(--muted); line-height: 1.75; margin-bottom: 16px; }
+    .stats-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+    .stat-box {
+      padding: 28px 20px; border-radius: 18px;
+      background: var(--dark3); border: 1px solid var(--border);
+      text-align: center;
+    }
+    .stat-num { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; color: var(--blue); }
+    .stat-label { color: var(--muted); font-size: .85rem; margin-top: 4px; }
+
+    .values-grid {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .value-card {
+      padding: 36px 28px; border-radius: 24px;
+      background: rgba(30,41,59,0.3);
+      border: 1px solid var(--border);
+    }
+    .value-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; margin-bottom: 20px;
+    }
+    .value-card h3 { font-size: 1.1rem; font-weight: 800; color: #fff; margin-bottom: 14px; }
+    .value-card p { color: var(--muted); line-height: 1.7; font-size: .9rem; }
+    .values-list { list-style: none; }
+    .values-list li {
+      display: flex; align-items: center; gap: 10px;
+      color: var(--muted); font-size: .9rem; padding: 5px 0;
+    }
+    .values-list li::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--blue); flex-shrink: 0;
+    }
+
+    /* ── CONTACT ────────────────────────────────── */
+    #contact { background: var(--dark2); }
+    .contact-grid {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1.2fr; gap: 64px; align-items: start;
+    }
+    .contact-info h3 { font-size: 1.6rem; font-weight: 800; color: #fff; margin-bottom: 16px; }
+    .contact-info > p { color: var(--muted); line-height: 1.75; margin-bottom: 36px; }
+    .contact-item {
+      display: flex; align-items: flex-start; gap: 16px;
+      margin-bottom: 24px; text-decoration: none;
+    }
+    .contact-item-icon {
+      width: 48px; height: 48px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .contact-item-label { font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; }
+    .contact-item-val { color: #fff; font-weight: 500; font-size: .95rem; margin-top: 2px; transition: color .2s; }
+    .contact-item:hover .contact-item-val { color: var(--blue); }
+
+    /* Form */
+    .form-box {
+      padding: 36px; border-radius: 28px;
+      background: var(--dark); border: 1px solid var(--border);
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label {
+      display: block; font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .12em;
+      color: var(--muted); margin-bottom: 8px;
+    }
+    .input-wrap { position: relative; }
+    .input-wrap i {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      color: #475569; font-size: 14px; pointer-events: none;
+    }
+    .input-wrap.textarea-wrap i { top: 16px; transform: none; }
+    .form-control {
+      width: 100%; background: var(--dark2);
+      border: 1px solid var(--border); border-radius: 12px;
+      padding: 12px 16px 12px 40px;
+      color: #fff; font-family: 'DM Sans', sans-serif; font-size: 14px;
+      transition: border-color .2s, box-shadow .2s;
+      outline: none; -webkit-appearance: none;
+    }
+    .form-control::placeholder { color: #334155; }
+    .form-control:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(59,130,246,.15); }
+    select.form-control { padding-left: 16px; cursor: pointer; }
+    select.form-control option { background: #0f172a; }
+    textarea.form-control { resize: none; min-height: 120px; }
+
+    .btn-submit {
+      width: 100%; padding: 15px;
+      background: var(--blue); color: #fff;
+      border: none; border-radius: 14px;
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+      transition: background .25s, transform .2s;
+    }
+    .btn-submit:hover { background: #60a5fa; transform: translateY(-2px); }
+    .btn-submit:disabled { opacity: .65; cursor: not-allowed; transform: none; }
+
+    .success-box {
+      display: none; flex-direction: column; align-items: center;
+      justify-content: center; text-align: center; padding: 48px 24px;
+    }
+    .success-box.show { display: flex; }
+    .success-icon {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: rgba(16,185,129,.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px; color: #10b981; margin-bottom: 24px;
+    }
+    .success-box h3 { font-size: 1.6rem; font-weight: 800; color: #fff; margin-bottom: 10px; }
+    .success-box p { color: var(--muted); margin-bottom: 28px; }
+    .spinner {
+      width: 18px; height: 18px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── FOOTER ─────────────────────────────────── */
+    footer { background: var(--dark); border-top: 1px solid var(--border); }
+    .footer-main {
+      max-width: 1200px; margin: 0 auto;
+      padding: 72px 24px 48px;
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px;
+    }
+    .footer-brand p {
+      color: var(--muted); font-size: .88rem; line-height: 1.75;
+      max-width: 280px; margin: 16px 0 24px;
+    }
+    .socials { display: flex; gap: 10px; }
+    .social-btn {
+      width: 36px; height: 36px; border-radius: 10px;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); font-size: 14px; text-decoration: none;
+      transition: background .2s, color .2s, border-color .2s;
+    }
+    .social-btn:hover { background: rgba(255,255,255,0.08); color: #fff; border-color: rgba(255,255,255,0.2); }
+
+    .footer-col h4 {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: .8rem; letter-spacing: .15em; text-transform: uppercase;
+      color: #fff; margin-bottom: 20px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 10px; }
+    .footer-col ul li a {
+      color: var(--muted); text-decoration: none; font-size: .88rem;
+      transition: color .2s;
+    }
+    .footer-col ul li a:hover { color: #fff; }
+
+    .footer-contact {
+      max-width: 1200px; margin: 0 auto;
+      padding: 32px 24px;
+      border-top: 1px solid var(--border);
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    }
+    .fc-item { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+    .fc-icon {
+      width: 42px; height: 42px; border-radius: 12px;
+      background: rgba(59,130,246,.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px; color: var(--blue); flex-shrink: 0;
+    }
+    .fc-label { font-size: 11px; color: #64748b; }
+    .fc-val { color: var(--muted); font-size: .88rem; font-weight: 500; transition: color .2s; }
+    .fc-item:hover .fc-val { color: #fff; }
+
+    .footer-bottom {
+      max-width: 1200px; margin: 0 auto;
+      padding: 20px 24px;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-bottom p { color: #475569; font-size: .82rem; }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { color: #475569; text-decoration: none; font-size: .82rem; transition: color .2s; }
+    .footer-links a:hover { color: #fff; }
+
+    /* ── RESPONSIVE ─────────────────────────────── */
+    @media (max-width: 900px) {
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: block; }
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+      .footer-main { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .footer-contact { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+    }
+    @media (max-width: 600px) {
+      section { padding: 64px 16px; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-main { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAVBAR ──────────────────────────────────────── -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#hero">
+      <div class="logo-icon"><i class="fas fa-shield-halved"></i></div>
+      <div class="logo-text">NexGen <span>Surveillance</span></div>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#hero">Home</a></li>
+      <li>
+        <a href="#services">Services <i class="fas fa-chevron-down chevron"></i></a>
+        <div class="dropdown">
+          <a href="#services"><i class="fas fa-camera"></i> CCTV Installation</a>
+          <a href="#services"><i class="fas fa-desktop"></i> Remote Monitoring</a>
+          <a href="#services"><i class="fas fa-lock"></i> Access Control</a>
+          <a href="#services"><i class="fas fa-bell"></i> Alarm Systems</a>
+          <a href="#services"><i class="fas fa-wifi"></i> Network CCTV</a>
         </div>
-        <div className="grid gap-6">
-          <Card className="bg-slate-900 border-none rounded-2xl shadow-xl">
-            <CardContent className="p-6">
-              <Camera className="mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Advanced CCTV Systems</h3>
-              <p className="text-slate-400">High-definition indoor & outdoor surveillance systems.</p>
-            </CardContent>
-          </Card>
-          <Card className="bg-slate-900 border-none rounded-2xl shadow-xl">
-            <CardContent className="p-6">
-              <Eye className="mb-4" />
-              <h3 className="text-xl font-semibold mb-2">24/7 Monitoring</h3>
-              <p className="text-slate-400">Real-time access from anywhere via mobile & desktop.</p>
-            </CardContent>
-          </Card>
+      </li>
+      <li>
+        <a href="#solutions">Solutions <i class="fas fa-chevron-down chevron"></i></a>
+        <div class="dropdown">
+          <a href="#solutions"><i class="fas fa-house"></i> Residential</a>
+          <a href="#solutions"><i class="fas fa-building"></i> Commercial</a>
+          <a href="#solutions"><i class="fas fa-landmark"></i> Institutional</a>
         </div>
-      </section>
+      </li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
 
-      {/* Mission, Vision & Values */}
-      <section className="py-16 px-6 bg-slate-900">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
-          <Card className="rounded-2xl shadow-xl">
-            <CardContent className="p-6">
-              <ShieldCheck className="mb-4" />
-              <h3 className="text-2xl font-semibold mb-3">Our Mission</h3>
-              <p className="text-slate-300">To deliver cutting-edge security solutions with professional installation and reliable support.</p>
-            </CardContent>
-          </Card>
-          <Card className="rounded-2xl shadow-xl">
-            <CardContent className="p-6">
-              <h3 className="text-2xl font-semibold mb-3">Our Vision</h3>
-              <p className="text-slate-300">To become a leading and trusted provider of smart surveillance solutions.</p>
-            </CardContent>
-          </Card>
-          <Card className="rounded-2xl shadow-xl">
-            <CardContent className="p-6">
-              <h3 className="text-2xl font-semibold mb-3">Our Values</h3>
-              <ul className="text-slate-300 list-disc list-inside">
-                <li>Integrity</li>
-                <li>Innovation</li>
-                <li>Reliability</li>
-                <li>Customer Commitment</li>
-                <li>Professionalism</li>
-              </ul>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
-      {/* Commitment Section */}
-      <section className="py-20 px-6 text-center">
-        <h2 className="text-3xl font-semibold mb-6">Our Commitment</h2>
-        <p className="max-w-3xl mx-auto text-slate-300 text-lg leading-relaxed">
-          At NexGen Surveillance, we understand that security is essential. We are committed to delivering dependable systems, expert installation, and ongoing support to ensure maximum protection for your property and assets.
-        </p>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-slate-950 py-10 text-center text-slate-400">
-        <Phone className="mx-auto mb-3" />
-        <p>Contact: 0543345674</p>
-        <p className="mt-2">© {new Date().getFullYear()} NexGen Surveillance. All Rights Reserved.</p>
-      </footer>
+    <div class="nav-cta">
+      <a href="tel:0543345674" class="nav-phone"><i class="fas fa-phone"></i> 0543 345 674</a>
+      <a href="#contact" class="btn btn-primary">Get a Quote</a>
     </div>
-  );
-}
+
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <i class="fas fa-bars" id="ham-icon"></i>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#hero" class="mobile-link" onclick="closeMobile()">Home</a>
+
+    <div class="mobile-link" onclick="toggleMobileSub('sub-services', this)">
+      Services <i class="fas fa-chevron-down" style="font-size:12px"></i>
+    </div>
+    <div class="mobile-sub" id="sub-services">
+      <a href="#services" onclick="closeMobile()"><i class="fas fa-camera"></i> CCTV Installation</a>
+      <a href="#services" onclick="closeMobile()"><i class="fas fa-desktop"></i> Remote Monitoring</a>
+      <a href="#services" onclick="closeMobile()"><i class="fas fa-lock"></i> Access Control</a>
+      <a href="#services" onclick="closeMobile()"><i class="fas fa-bell"></i> Alarm Systems</a>
+      <a href="#services" onclick="closeMobile()"><i class="fas fa-wifi"></i> Network CCTV</a>
+    </div>
+
+    <div class="mobile-link" onclick="toggleMobileSub('sub-solutions', this)">
+      Solutions <i class="fas fa-chevron-down" style="font-size:12px"></i>
+    </div>
+    <div class="mobile-sub" id="sub-solutions">
+      <a href="#solutions" onclick="closeMobile()"><i class="fas fa-house"></i> Residential</a>
+      <a href="#solutions" onclick="closeMobile()"><i class="fas fa-building"></i> Commercial</a>
+      <a href="#solutions" onclick="closeMobile()"><i class="fas fa-landmark"></i> Institutional</a>
+    </div>
+
+    <a href="#about" class="mobile-link" onclick="closeMobile()">About</a>
+    <a href="#contact" class="mobile-link" onclick="closeMobile()">Contact</a>
+
+    <div class="mobile-cta">
+      <a href="tel:0543345674" class="btn btn-outline">
+        <i class="fas fa-phone"></i> Call Us
+      </a>
+      <a href="#contact" class="btn btn-primary" onclick="closeMobile()">Get a Quote</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── HERO SLIDER ──────────────────────────────────── -->
+<section id="hero">
+
+  <!-- Slide 1 -->
+  <div class="slide active" data-slide="0" style="--accent:#3b82f6">
+    <div class="slide-bg"></div>
+    <div class="slide-grid"></div>
+    <div class="slide-glow"></div>
+    <i class="fas fa-camera slide-icon-bg"></i>
+    <div class="slide-content">
+      <span class="slide-badge" style="color:#3b82f6;border-color:rgba(59,130,246,.35);background:rgba(59,130,246,.1)">
+        New: AI-Powered Analytics
+      </span>
+      <h1>Advanced Surveillance.<br>Total Peace of Mind.</h1>
+      <p>State-of-the-art CCTV systems designed for homes, businesses, and institutions.</p>
+      <div class="slide-btns">
+        <a href="#contact" class="btn btn-primary">Explore Solutions <i class="fas fa-arrow-right"></i></a>
+        <a href="#services" class="btn btn-outline">Our Services</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 2 -->
+  <div class="slide" data-slide="1" style="--accent:#06b6d4">
+    <div class="slide-bg"></div>
+    <div class="slide-grid" style="background-image:linear-gradient(#06b6d433 1px,transparent 1px),linear-gradient(90deg,#06b6d433 1px,transparent 1px);background-size:60px 60px"></div>
+    <div class="slide-glow" style="background:#06b6d4"></div>
+    <i class="fas fa-eye slide-icon-bg" style="color:#06b6d4"></i>
+    <div class="slide-content">
+      <span class="slide-badge" style="color:#06b6d4;border-color:rgba(6,182,212,.35);background:rgba(6,182,212,.1)">
+        Mobile-Ready Platform
+      </span>
+      <h1>24/7 Remote Monitoring —<br>Anywhere, Anytime.</h1>
+      <p>Live access from your mobile or desktop. Never miss a moment that matters.</p>
+      <div class="slide-btns">
+        <a href="#contact" class="btn" style="background:#06b6d4;color:#fff">Get Started <i class="fas fa-arrow-right"></i></a>
+        <a href="#services" class="btn btn-outline">Our Services</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 3 -->
+  <div class="slide" data-slide="2" style="--accent:#6366f1">
+    <div class="slide-bg"></div>
+    <div class="slide-grid" style="background-image:linear-gradient(#6366f133 1px,transparent 1px),linear-gradient(90deg,#6366f133 1px,transparent 1px);background-size:60px 60px"></div>
+    <div class="slide-glow" style="background:#6366f1"></div>
+    <i class="fas fa-shield-halved slide-icon-bg" style="color:#6366f1"></i>
+    <div class="slide-content">
+      <span class="slide-badge" style="color:#6366f1;border-color:rgba(99,102,241,.35);background:rgba(99,102,241,.1)">
+        Certified Installers
+      </span>
+      <h1>Trusted by Homes &amp;<br>Enterprises Alike.</h1>
+      <p>Tailored security infrastructure with professional installation and ongoing support.</p>
+      <div class="slide-btns">
+        <a href="#contact" class="btn" style="background:#6366f1;color:#fff">Request a Quote <i class="fas fa-arrow-right"></i></a>
+        <a href="#services" class="btn btn-outline">Our Services</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <button class="slider-arrow prev" onclick="changeSlide(-1)"><i class="fas fa-chevron-left"></i></button>
+  <button class="slider-arrow next" onclick="changeSlide(1)"><i class="fas fa-chevron-right"></i></button>
+  <div class="slider-dots" id="slider-dots"></div>
+</section>
+
+<!-- ── SERVICES ─────────────────────────────────────── -->
+<section id="services">
+  <div class="section-head">
+    <p class="section-label">What We Offer</p>
+    <h2 class="section-title">Our Services</h2>
+    <p class="section-sub">Professional security solutions tailored to your specific needs.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon" style="background:rgba(59,130,246,.12)"><i class="fas fa-camera" style="color:#3b82f6"></i></div>
+      <h3>CCTV Installation</h3>
+      <p>HD indoor &amp; outdoor cameras with night vision and wide-angle coverage for comprehensive protection.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon" style="background:rgba(6,182,212,.12)"><i class="fas fa-desktop" style="color:#06b6d4"></i></div>
+      <h3>Remote Monitoring</h3>
+      <p>24/7 live feeds accessible from mobile or desktop, anywhere in the world, at any time.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon" style="background:rgba(139,92,246,.12)"><i class="fas fa-lock" style="color:#8b5cf6"></i></div>
+      <h3>Access Control</h3>
+      <p>Biometric and card-based entry systems for secured zones in your property.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon" style="background:rgba(245,158,11,.12)"><i class="fas fa-bell" style="color:#f59e0b"></i></div>
+      <h3>Alarm Systems</h3>
+      <p>Instant alert systems with SMS and app notifications triggered on intrusion detection.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon" style="background:rgba(16,185,129,.12)"><i class="fas fa-wifi" style="color:#10b981"></i></div>
+      <h3>Network CCTV</h3>
+      <p>IP-based surveillance deployed over your existing network infrastructure seamlessly.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon" style="background:rgba(239,68,68,.12)"><i class="fas fa-eye" style="color:#ef4444"></i></div>
+      <h3>Video Analytics</h3>
+      <p>AI-powered motion detection, facial recognition, and behaviour analysis for smart surveillance.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── SOLUTIONS ────────────────────────────────────── -->
+<section id="solutions">
+  <div class="section-head">
+    <p class="section-label">Industries We Serve</p>
+    <h2 class="section-title">Tailored Solutions</h2>
+    <p class="section-sub">Security setups designed around the unique demands of each environment.</p>
+  </div>
+  <div class="solutions-grid" style="max-width:1100px;margin:0 auto">
+    <div class="solution-card">
+      <div class="solution-icon" style="background:rgba(59,130,246,.12)"><i class="fas fa-house" style="color:#3b82f6"></i></div>
+      <h3>Residential</h3>
+      <p>Smart home security systems to protect your family and property around the clock.</p>
+    </div>
+    <div class="solution-card">
+      <div class="solution-icon" style="background:rgba(6,182,212,.12)"><i class="fas fa-building" style="color:#06b6d4"></i></div>
+      <h3>Commercial</h3>
+      <p>Scalable surveillance for offices, warehouses, and retail environments of any size.</p>
+    </div>
+    <div class="solution-card">
+      <div class="solution-icon" style="background:rgba(139,92,246,.12)"><i class="fas fa-landmark" style="color:#8b5cf6"></i></div>
+      <h3>Institutional</h3>
+      <p>Enterprise-grade security for schools, hospitals, and government facilities.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ─────────────────────────────────────────── -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-text">
+      <p class="section-label">Who We Are</p>
+      <h2>About NexGen Surveillance</h2>
+      <p>NexGen Surveillance is a modern security solutions provider specializing in advanced CCTV installation, remote monitoring systems, and customized security infrastructure for homes, businesses, and institutions.</p>
+      <p>We combine innovation, reliability, and professional expertise to deliver peace of mind. Our certified team handles every installation with precision and ongoing support you can always count on.</p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-box"><div class="stat-num">500+</div><div class="stat-label">Installations</div></div>
+      <div class="stat-box"><div class="stat-num">24/7</div><div class="stat-label">Support</div></div>
+      <div class="stat-box"><div class="stat-num">5★</div><div class="stat-label">Rated</div></div>
+      <div class="stat-box"><div class="stat-num">10+</div><div class="stat-label">Years Exp.</div></div>
+    </div>
+  </div>
+
+  <div class="values-grid">
+    <div class="value-card">
+      <div class="value-icon" style="background:rgba(59,130,246,.12)"><i class="fas fa-shield-halved" style="color:#3b82f6"></i></div>
+      <h3>Our Mission</h3>
+      <p>To deliver cutting-edge security solutions with professional installation and reliable ongoing support.</p>
+    </div>
+    <div class="value-card">
+      <div class="value-icon" style="background:rgba(6,182,212,.12)"><i class="fas fa-eye" style="color:#06b6d4"></i></div>
+      <h3>Our Vision</h3>
+      <p>To become a leading and trusted provider of smart surveillance solutions across the region.</p>
+    </div>
+    <div class="value-card">
+      <div class="value-icon" style="background:rgba(139,92,246,.12)"><i class="fas fa-star" style="color:#8b5cf6"></i></div>
+      <h3>Our Values</h3>
+      <ul class="values-list">
+        <li>Integrity</li>
+        <li>Innovation</li>
+        <li>Reliability</li>
+        <li>Customer Commitment</li>
+        <li>Professionalism</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ───────────────────────────────────────── -->
+<section id="contact">
+  <div class="section-head">
+    <p class="section-label">Get in Touch</p>
+    <h2 class="section-title">Contact Us</h2>
+    <p class="section-sub">Ready to secure your property? Reach out and we'll craft a solution for you.</p>
+  </div>
+
+  <div class="contact-grid">
+    <div class="contact-info">
+      <h3>Let's Talk Security</h3>
+      <p>Whether you need a single camera or a full enterprise system, our team is ready to help design the perfect solution for you.</p>
+
+      <a href="tel:0543345674" class="contact-item">
+        <div class="contact-item-icon" style="background:rgba(59,130,246,.12)"><i class="fas fa-phone" style="color:#3b82f6"></i></div>
+        <div>
+          <div class="contact-item-label">Phone</div>
+          <div class="contact-item-val">0543 345 674</div>
+        </div>
+      </a>
+      <a href="mailto:info@nexgensurveillance.com" class="contact-item">
+        <div class="contact-item-icon" style="background:rgba(6,182,212,.12)"><i class="fas fa-envelope" style="color:#06b6d4"></i></div>
+        <div>
+          <div class="contact-item-label">Email</div>
+          <div class="contact-item-val">info@nexgensurveillance.com</div>
+        </div>
+      </a>
+      <a href="#" class="contact-item">
+        <div class="contact-item-icon" style="background:rgba(139,92,246,.12)"><i class="fas fa-location-dot" style="color:#8b5cf6"></i></div>
+        <div>
+          <div class="contact-item-label">Location</div>
+          <div class="contact-item-val">Accra, Ghana</div>
+        </div>
+      </a>
+    </div>
+
+    <div class="form-box">
+      <!-- Success state -->
+      <div class="success-box" id="success-box">
+        <div class="success-icon"><i class="fas fa-check"></i></div>
+        <h3>Message Sent!</h3>
+        <p>Thank you for reaching out. Our team will get back to you within 24 hours.</p>
+        <button class="btn btn-primary" onclick="resetForm()">Send Another Message</button>
+      </div>
+
+      <!-- Form -->
+      <form id="contact-form" onsubmit="handleSubmit(event)" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Full Name *</label>
+            <div class="input-wrap">
+              <i class="fas fa-user"></i>
+              <input type="text" class="form-control" placeholder="John Doe" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email *</label>
+            <div class="input-wrap">
+              <i class="fas fa-envelope"></i>
+              <input type="email" class="form-control" placeholder="you@example.com" required />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Phone</label>
+            <div class="input-wrap">
+              <i class="fas fa-phone"></i>
+              <input type="tel" class="form-control" placeholder="0543 345 674" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Service Needed</label>
+            <select class="form-control">
+              <option value="" disabled selected>Select a service</option>
+              <option>CCTV Installation</option>
+              <option>Remote Monitoring</option>
+              <option>Access Control</option>
+              <option>Alarm Systems</option>
+              <option>Network CCTV</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Message *</label>
+          <div class="input-wrap textarea-wrap">
+            <i class="fas fa-message"></i>
+            <textarea class="form-control" placeholder="Tell us about your security needs..." required></textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submit-btn">
+          <i class="fas fa-paper-plane"></i> Send Message
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ────────────────────────────────────────── -->
+<footer>
+  <div class="footer-main">
+    <div class="footer-brand">
+      <a class="nav-logo" href="#hero" style="display:inline-flex;margin-bottom:4px">
+        <div class="logo-icon"><i class="fas fa-shield-halved"></i></div>
+        <div class="logo-text">NexGen <span>Surveillance</span></div>
+      </a>
+      <p>Securing what matters most. Professional CCTV installation and smart surveillance for homes, businesses, and institutions.</p>
+      <div class="socials">
+        <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#services">CCTV Installation</a></li>
+        <li><a href="#services">Remote Monitoring</a></li>
+        <li><a href="#services">Access Control</a></li>
+        <li><a href="#services">Alarm Systems</a></li>
+        <li><a href="#services">Network CCTV</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Solutions</h4>
+      <ul>
+        <li><a href="#solutions">Residential</a></li>
+        <li><a href="#solutions">Commercial</a></li>
+        <li><a href="#solutions">Institutional</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#about">Our Mission</a></li>
+        <li><a href="#about">Our Values</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-contact">
+    <a href="tel:0543345674" class="fc-item">
+      <div class="fc-icon"><i class="fas fa-phone"></i></div>
+      <div><div class="fc-label">Call Us</div><div class="fc-val">0543 345 674</div></div>
+    </a>
+    <a href="mailto:info@nexgensurveillance.com" class="fc-item">
+      <div class="fc-icon"><i class="fas fa-envelope"></i></div>
+      <div><div class="fc-label">Email Us</div><div class="fc-val">info@nexgensurveillance.com</div></div>
+    </a>
+    <a href="#" class="fc-item">
+      <div class="fc-icon"><i class="fas fa-location-dot"></i></div>
+      <div><div class="fc-label">Location</div><div class="fc-val">Accra, Ghana</div></div>
+    </a>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© <span id="year"></span> NexGen Surveillance. All Rights Reserved.</p>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Cookie Policy</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ── SCRIPTS ───────────────────────────────────────── -->
+<script>
+  // Year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Navbar scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Hamburger
+  document.getElementById('hamburger').addEventListener('click', () => {
+    const menu = document.getElementById('mobile-menu');
+    const icon = document.getElementById('ham-icon');
+    menu.classList.toggle('open');
+    icon.className = menu.classList.contains('open') ? 'fas fa-xmark' : 'fas fa-bars';
+  });
+
+  function closeMobile() {
+    document.getElementById('mobile-menu').classList.remove('open');
+    document.getElementById('ham-icon').className = 'fas fa-bars';
+  }
+
+  function toggleMobileSub(id, el) {
+    const sub = document.getElementById(id);
+    sub.classList.toggle('open');
+    const icon = el.querySelector('i');
+    if (icon) icon.style.transform = sub.classList.contains('open') ? 'rotate(180deg)' : '';
+  }
+
+  // ── Slider ──
+  const slides = document.querySelectorAll('.slide');
+  const dotsContainer = document.getElementById('slider-dots');
+  let current = 0, timer;
+
+  // Build dots
+  slides.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.style.background = i === 0 ? '#3b82f6' : 'rgba(255,255,255,0.25)';
+    d.onclick = () => goTo(i);
+    dotsContainer.appendChild(d);
+  });
+
+  const accents = ['#3b82f6', '#06b6d4', '#6366f1'];
+
+  function goTo(idx) {
+    slides[current].classList.remove('active');
+    updateDot(current, false);
+    current = (idx + slides.length) % slides.length;
+    slides[current].classList.add('active');
+    updateDot(current, true);
+    resetTimer();
+  }
+
+  function updateDot(i, active) {
+    const dots = dotsContainer.querySelectorAll('.dot');
+    dots[i].classList.toggle('active', active);
+    dots[i].style.background = active ? accents[i] : 'rgba(255,255,255,0.25)';
+  }
+
+  function changeSlide(dir) { goTo(current + dir); }
+
+  function resetTimer() {
+    clearInterval(timer);
+    timer = setInterval(() => goTo(current + 1), 6000);
+  }
+  resetTimer();
+
+  // ── Contact form ──
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<div class="spinner"></div> Sending...';
+    setTimeout(() => {
+      document.getElementById('contact-form').style.display = 'none';
+      document.getElementById('success-box').classList.add('show');
+    }, 1800);
+  }
+
+  function resetForm() {
+    document.getElementById('contact-form').reset();
+    document.getElementById('contact-form').style.display = 'block';
+    document.getElementById('success-box').classList.remove('show');
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+  }
+</script>
+</body>
+</html>
